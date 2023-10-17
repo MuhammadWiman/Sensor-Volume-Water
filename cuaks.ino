@@ -5,9 +5,9 @@
 
 /* Fill in information from Blynk Device Info here */
 /* Read more: https://bit.ly/BlynkSimpleAuth */
-#define BLYNK_TEMPLATE_ID "TMPL63Jn26XTW"
+#define BLYNK_TEMPLATE_ID "Silahkan isi template yang tersedia pada Dashboard Blynk"
 #define BLYNK_TEMPLATE_NAME "Pendeteksi Volume Air"
-#define BLYNK_AUTH_TOKEN "lFU7CkqOoRK6rcWhym1YJVpZlxaT2IGe"
+#define BLYNK_AUTH_TOKEN "Silahkan isi Token yang tersedia pada Dashboard Blynk"
 
 /* BlynkMultiClient allows attaching Blynk to the standard Arduino Client,
    and also allows multiple (up to 4) connections to be registered.
