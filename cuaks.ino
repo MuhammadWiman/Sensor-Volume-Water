@@ -5,9 +5,9 @@
 
 /* Fill in information from Blynk Device Info here */
 /* Read more: https://bit.ly/BlynkSimpleAuth */
-#define BLYNK_TEMPLATE_ID "TMPL63Jn26XTW"
+#define BLYNK_TEMPLATE_ID "isi sesuai Tutor di web Blynk"
 #define BLYNK_TEMPLATE_NAME "Pendeteksi Volume Air"
-#define BLYNK_AUTH_TOKEN "lFU7CkqOoRK6rcWhym1YJVpZlxaT2IGe"
+#define BLYNK_AUTH_TOKEN "isi sesuai Tutor di web Blynk"
 
 /* BlynkMultiClient allows attaching Blynk to the standard Arduino Client,
    and also allows multiple (up to 4) connections to be registered.
@@ -29,7 +29,8 @@ const int trigPin = D1;
 const int echoPin = D2;
 long duration;
 int distance;
-int maxDistance = 0;
+int minDistance = 0;
+int maxDistance = 20;
 
 // LED
 const int ledPinM = D0;
@@ -50,19 +51,26 @@ void KirimSensor () {
   duration = pulseIn(echoPin, HIGH);
   distance = (duration / 2) / 29.1;  // Menghitung jarak dalam sentimeter
 
+
   // Kirim data jarak ke Blynk.Cloud
   if (isnan(distance)) {
     Serial.println("Gagal Membaca Nilai Sensor Jarak");
     return;
   }
-  else if (distance >= 100) {
+  else if (distance >= 20) {
     Serial.println("Nilai Sensor Jarak Terlalu Jauh");
-    Blynk.virtualWrite(V1, maxDistance);
+    Blynk.virtualWrite(V1, minDistance);
+    Blynk.virtualWrite(V3, 0);
+    Blynk.virtualWrite(V2, 0);
+    Blynk.virtualWrite(V4, 0);
     return;
   }
+  int total_data = maxDistance - distance;
+  
+  
   // You can send any value at any time.
   // Please don't send more that 10 values per second.
-  Blynk.virtualWrite(V1, distance); // kita gunakan pin virtual 5 untuk humidity (kelembaban) 
+  Blynk.virtualWrite(V1, total_data); // kita gunakan pin virtual 5 untuk humidity (kelembaban) 
   Serial.println("Data Sudah terkirim....");
   Serial.print("Distance: ");
   Serial.print(distance);
@@ -70,14 +78,23 @@ void KirimSensor () {
 
   // Kontrol LED berdasarkan jarak
   if (distance <= 10) {
+    Blynk.virtualWrite(V2, 1);
+    Blynk.virtualWrite(V3, 0);
+    Blynk.virtualWrite(V4, 0);
     digitalWrite(ledPinM, HIGH);
     digitalWrite(ledPinK, LOW);
     digitalWrite(ledPinH, LOW);
   } else if (distance <= 15) {
+    Blynk.virtualWrite(V4, 1);
+    Blynk.virtualWrite(V3, 0);
+    Blynk.virtualWrite(V2, 0);
     digitalWrite(ledPinK, HIGH);
     digitalWrite(ledPinM, LOW);
     digitalWrite(ledPinH, LOW);     
  } else {
+    Blynk.virtualWrite(V3, 1);
+    Blynk.virtualWrite(V2, 0);
+    Blynk.virtualWrite(V4, 0);
     digitalWrite(ledPinH, HIGH); 
     digitalWrite(ledPinM, LOW);
     digitalWrite(ledPinK, LOW);
